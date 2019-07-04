@@ -4,7 +4,6 @@ import * as mongoose from 'mongoose';
 import * as bluebird from "bluebird";
 import * as https from "https";
 import * as xml2js from "xml2js";
-import * as eyes from "eyes";
 
 dotenv.config();
 
@@ -23,7 +22,6 @@ const app = express();
   const minutes = 0.5; 
   const interval = minutes * 60 * 1000;
   setInterval(() => {
-    console.log("Checking UN Sanctions");
     https.get('https://scsanctions.un.org/resources/xml/en/consolidated.xml', (res) => {
       let xml = '';
       res.setEncoding('utf8');
@@ -34,7 +32,8 @@ const app = express();
             if (err) {
               console.log(err);
             } else {
-              eyes.inspect(json);
+              const dateGenerated = json.CONSOLIDATED_LIST.$.dateGenerated;
+              const individual = json.CONSOLIDATED_LIST.INDIVIDUALS[0].INDIVIDUAL[0];
               // get last imported date from the array in the database
               // check the date generated and compare to last import
               // confirm the timezone!
@@ -47,7 +46,6 @@ const app = express();
       });
       res.on('error', (err) => console.log(err));
     });
-
   }, interval);
 })()
 
@@ -55,3 +53,4 @@ const port = process.env.API_PORT;
 app.listen(port, ()=> {
   console.log(`listening on ${port}`);
 });
+
