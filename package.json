@@ -1,0 +1,31 @@
+{
+  "name": "open-sanctions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "nodemon --exec ts-node src/server.ts --watch src",
+    "build": "tsc",
+    "watch-ts": "tsc -w",
+    "watch-node": "nodemon dist/server.js",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript, Node\" -c \"yello.bold, cyan.bold\" \"npm run watch-ts\" \"npm run watch-node\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bkawk/open-sanctions.git"
+  },
+  "author": "@bkawk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bkawk/open-sanctions/issues"
+  },
+  "homepage": "https://github.com/bkawk/open-sanctions#readme",
+  "dependencies": {
+    "@types/node": "^12.0.12",
+    "concurrently": "^4.1.1",
+    "nodemon": "^1.19.1",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.2"
+  }
+}
