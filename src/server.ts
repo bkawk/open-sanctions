@@ -5,6 +5,9 @@ import * as bluebird from "bluebird";
 import * as https from "https";
 import * as xml2js from "xml2js";
 
+const ipfsAPI = require('ipfs-api');
+const ipfs = ipfsAPI('127.0.0.1', '5001', {protocol: 'http'});
+
 dotenv.config();
 
 // Connect to MongoDB
@@ -33,7 +36,10 @@ const app = express();
               console.log(err);
             } else {
               const dateGenerated = json.CONSOLIDATED_LIST.$.dateGenerated;
-              const individual = json.CONSOLIDATED_LIST.INDIVIDUALS[0].INDIVIDUAL[0];
+              const individualsArray = json.CONSOLIDATED_LIST.INDIVIDUALS[0].INDIVIDUAL;
+              individualsArray.forEach(async (value: any) => {
+                // console.log(value);
+                console.log(await pinToIpfs(value));
               // get last imported date from the array in the database
               // check the date generated and compare to last import
               // confirm the timezone!
@@ -41,6 +47,7 @@ const app = express();
               // remove the items that are not in the list
               // update the items that are in the list
               // add the new items in the list
+              });
             }
         });
       });
@@ -49,8 +56,22 @@ const app = express();
   }, interval);
 })()
 
+
+
+async function pinToIpfs(json: any) {
+  try {
+    const base64 = Buffer.from(JSON.stringify(json)).toString("base64");
+    const add = await ipfs.add(Buffer.from(base64));
+    const hash = add[0].hash;
+    const pin = await ipfs.pin.add(hash);
+    return pin[0].hash;
+  }
+  catch(err) {
+    return err
+  } 
+} 
+
 const port = process.env.API_PORT;
 app.listen(port, ()=> {
   console.log(`listening on ${port}`);
 });
-
