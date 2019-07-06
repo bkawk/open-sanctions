@@ -4,5 +4,5 @@
 
 ```
 npm run build
-npm run wtch
+npm run watch
 ```
