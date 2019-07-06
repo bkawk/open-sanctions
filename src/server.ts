@@ -4,7 +4,8 @@ import * as mongoose from 'mongoose';
 import * as bluebird from "bluebird";
 import * as https from "https";
 import * as xml2js from "xml2js";
-import { getCode } from "country-list";
+
+var mapper = require('country-mapper');
 
 const ipfsAPI = require('ipfs-api');
 const ipfs = ipfsAPI('127.0.0.1', '5001', {protocol: 'http'});
@@ -90,7 +91,7 @@ const app = express();
                     } else if (nationalityName === 'United Republic of Tanzania') {
                       if (nationalitiesArray.indexOf('TZ') === -1) nationalitiesArray.push('TZ');
                     } else if (value.NATIONALITY[0].VALUE[0]){
-                      nationality = getCode(nationalityName.trim())
+                      nationality = mapper.convert(nationalityName.trim());
                       if (nationality && nationalitiesArray.indexOf(nationality) === -1) nationalitiesArray.push(nationality);
                     }  
                   }
@@ -144,7 +145,7 @@ const app = express();
                   // check the date generated and compare to last import
                   // confirm the timezone!
                   // if date generated is > last imported start the import!
-                  // remove the items that are not in the list
+                  // remove / unpin the items that are not in the list
                   // update the items that are in the list
                   // add the new items in the list
                   // hande names with special charectors

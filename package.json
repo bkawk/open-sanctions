@@ -32,6 +32,7 @@
     "bluebird": "^3.5.5",
     "concurrently": "^4.1.1",
     "country-list": "^2.1.1",
+    "country-mapper": "^1.2.1",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "https": "^1.0.0",
