@@ -37,7 +37,7 @@
     "express": "^4.17.1",
     "https": "^1.0.0",
     "ipfs-api": "^26.1.2",
-    "mongoose": "^5.6.3",
+    "mongoose": "^5.7.5",
     "nodemon": "^1.19.1",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.2",
